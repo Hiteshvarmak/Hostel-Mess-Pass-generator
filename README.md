@@ -1,7 +1,3 @@
-Here is a **clean GitHub project description + README content** you can paste into your repository. It matches your project files (`script.js`, `style.css`, `verify.html`) and explains the system clearly.
-
----
-
 # Hostel Daily Pass System – Digital Token Generator
 
 A **web-based hostel access management system** that generates a secure **daily digital pass with QR code** for hostellers. The system allows students to request a daily pass and enables hostel administrators to **approve or reject requests** through an admin dashboard.

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hostel Daily Pass System</title>
+<link rel="icon" href="/iddVL6pUpd_1772630504448.jpeg" type="image/x-icn">
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+<body>
+
+<!-- LOGIN SECTION -->
+<section id="login-section">
+
+<div class="login-wrapper">
+
+<div class="login-card">
+
+<div class="login-header">
+<div class="logo-icon">
+    <!-- added image for header; update the src path to the actual file -->
+    <img src="/iddVL6pUpd_1772630504448.jpeg" alt="VNR VJIET Logo" />
+    <!-- fallback icon if image fails -->
+   
+</div>
+
+<h1>VNR VJIET Hostel Pass System</h1>
+<p>Digital Daily Access Token</p>
+</div>
+
+<form id="login-form">
+
+<!-- notice about signup requirement -->
+<p class="signup-note">Please sign up first using your official VNRVJIET college email before logging in.</p>
+
+<div class="input-group">
+<label for="email">
+<i class="fas fa-envelope"></i> College Email
+</label>
+
+<input type="email" id="email" placeholder="name@vnrvjiet.in">
+<span class="error-msg" id="email-error"></span>
+</div>
+
+<div class="input-group">
+<label for="hosteller-name">
+<i class="fas fa-user"></i> Full Name
+</label>
+
+<input type="text" id="hosteller-name" placeholder="Enter name">
+<span class="error-msg" id="name-error"></span>
+</div>
+
+<div class="input-group">
+<label for="room-number">
+<i class="fas fa-door-open"></i> Room Number
+</label>
+
+<input type="text" id="room-number" placeholder="Room No">
+<span class="error-msg" id="room-error"></span>
+</div>
+
+<div class="input-group">
+<label for="hostel-id">
+<i class="fas fa-id-card"></i> Hostel ID
+</label>
+
+<input type="text" id="hostel-id" placeholder="Hostel ID">
+<span class="error-msg" id="id-error"></span>
+</div>
+
+<div class="input-group">
+<label for="branch">
+<i class="fas fa-graduation-cap"></i> Branch
+</label>
+
+<input type="text" id="branch" placeholder="e.g. CSE, ECE">
+<span class="error-msg" id="branch-error"></span>
+</div>
+
+<div class="input-group">
+<label for="year">
+<i class="fas fa-calendar-alt"></i> Study Year
+</label>
+
+<select id="year">
+  <option value="">Select year</option>
+  <option value="1">1st</option>
+  <option value="2">2nd</option>
+  <option value="3">3rd</option>
+  <option value="4">4th</option>
+</select>
+<span class="error-msg" id="year-error"></span>
+</div>
+
+<button type="submit" class="btn-primary">
+<i class="fas fa-sign-in-alt"></i>
+Enter VNR VJIET Hostel Portal
+</button>
+
+</form>
+
+<button class="btn-admin-toggle" id="admin-login-btn">
+<i class="fas fa-shield-halved"></i>
+Admin Access
+</button>
+
+<!-- admin login panel -->
+<div id="admin-panel" class="hidden">
+  <div class="input-group">
+    <label for="admin-user"><i class="fas fa-user-shield"></i> Admin Username</label>
+    <input type="text" id="admin-user" placeholder="username">
+    <span class="error-msg" id="admin-user-error"></span>
+  </div>
+  <div class="input-group">
+    <label for="admin-pass"><i class="fas fa-key"></i> Password</label>
+    <input type="password" id="admin-pass" placeholder="password">
+    <span class="error-msg" id="admin-pass-error"></span>
+  </div>
+  <button id="admin-login-submit" class="btn-primary">
+    <i class="fas fa-sign-in-alt"></i> Login as Admin
+  </button>
+
+  <div id="admin-actions" class="hidden">
+    <p>Review hosteller details:</p>
+    <button id="verify-btn" class="btn-primary">Verify</button>
+    <button id="reject-btn" class="btn-danger">Not Verify</button>
+  </div>
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- ADMIN DASHBOARD SECTION -->
+<section id="admin-dashboard-section" class="hidden">
+
+<nav class="navbar">
+
+<div class="nav-brand">
+<img src="/VNRVJIET New logo-04 (1).png" alt="VNR VJIET" class="nav-logo" />
+<span>Admin Portal - Hostel Pass Approvals</span>
+</div>
+
+<div class="nav-actions">
+<button class="btn-icon btn-danger" id="admin-logout-btn">
+<i class="fas fa-sign-out-alt"></i> Logout
+</button>
+</div>
+
+</nav>
+
+<div class="dashboard-container">
+
+<div class="card">
+
+<div class="card-header">
+<i class="fas fa-clipboard-check"></i>
+<h2>Pending Approvals</h2>
+</div>
+
+<div id="admin-list" class="admin-list">
+<!-- Hosteller entries will be inserted here -->
+</div>
+
+<div id="no-entries" class="info-text">
+No pending approvals.
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-header">
+<i class="fas fa-chart-bar"></i>
+<h2>Daily Pass Statistics by Year</h2>
+</div>
+
+<div class="stats-wrapper">
+<canvas id="passStatsChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- DASHBOARD -->
+<section id="dashboard-section" class="hidden">
+
+<nav class="navbar">
+
+<div class="nav-brand">
+<!-- dashboard logo -->
+<img src="/VNRVJIET New logo-04 (1).png" alt="VNR VJIET" class="nav-logo" />
+
+<span>VNR VJIET Hostel Pass</span>
+</div>
+
+<div class="nav-actions">
+
+<button class="btn-icon" id="admin-panel-btn">
+<i class="fas fa-shield-halved"></i> Admin
+</button>
+
+<button class="btn-icon btn-danger" id="logout-btn">
+<i class="fas fa-sign-out-alt"></i> Logout
+</button>
+
+</div>
+
+</nav>
+
+<div class="dashboard-container">
+
+<!-- PROFILE CARD -->
+<div class="card">
+
+<div class="card-header">
+<i class="fas fa-user-circle"></i>
+<h2>Hosteller Profile</h2>
+</div>
+
+<div class="info-grid">
+
+<div class="info-item">
+<span class="info-label">
+<i class="fas fa-user"></i> Name
+</span>
+<span id="display-name">--</span>
+</div>
+
+<div class="info-item">
+<span class="info-label">
+<i class="fas fa-door-open"></i> Room
+</span>
+<span id="display-room">--</span>
+</div>
+
+<div class="info-item">
+<span class="info-label">
+<i class="fas fa-id-badge"></i> Hostel ID
+</span>
+<span id="display-hostel-id">--</span>
+</div>
+
+<div class="info-item">
+<span class="info-label">
+<i class="fas fa-book"></i> Branch
+</span>
+<span id="display-branch">--</span>
+</div>
+
+<div class="info-item">
+<span class="info-label">
+<i class="fas fa-user-graduate"></i> Year
+</span>
+<span id="display-year">--</span>
+</div>
+
+<div class="info-item">
+<span class="info-label">
+<i class="fas fa-calendar-day"></i> Date
+</span>
+<span id="display-date">--</span>
+</div>
+
+<div class="info-item">
+<span class="info-label">
+<i class="fas fa-check-circle"></i> Status
+</span>
+<span id="display-status" class="status-badge">--</span>
+</div>
+
+</div>
+</div>
+
+
+<!-- TOKEN CARD -->
+<div class="card token-card">
+
+<div class="card-header">
+<i class="fas fa-ticket"></i>
+<h2>Today's Access Pass</h2>
+</div>
+
+<div class="token-display-wrapper">
+
+<div class="token-label">ACCESS TOKEN</div>
+
+<div id="token-display" class="token-string">
+---- ---- ----
+</div>
+
+<button class="btn-copy" id="copy-token-btn">
+<i class="fas fa-copy"></i>
+</button>
+
+</div>
+
+<div class="qr-section">
+
+<div class="qr-label">
+<i class="fas fa-qrcode"></i>
+QR Code
+</div>
+
+<div id="qrcode"></div>
+
+</div>
+
+<button id="generate-btn" class="btn-generate">
+<i class="fas fa-magic"></i>
+Generate Pass
+</button>
+
+<div id="approval-message" class="approval-message hidden">
+<i class="fas fa-clock"></i>
+Waiting for admin approval...
+</div>
+</div>
+
+</div>
+
+<!-- NOTIFICATIONS CARD -->
+<div class="card">
+
+<div class="card-header">
+<i class="fas fa-bell"></i>
+<h2>Notifications</h2>
+</div>
+
+<div id="notifications-list" class="notifications-list">
+<!-- Notifications will be displayed here -->
+</div>
+
+<div id="no-notifications" class="info-text">
+No new notifications.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

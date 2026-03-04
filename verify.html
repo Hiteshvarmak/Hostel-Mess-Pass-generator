@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Verify Token</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Mess Token Verification</h2>
+
+<input type="text" id="verifyToken" placeholder="Enter Token">
+
+<button onclick="verifyToken()">Verify</button>
+
+<h3 id="result"></h3>
+
+</div>
+
+<script>
+
+function verifyToken(){
+
+let stored = JSON.parse(localStorage.getItem("dailyPass"));
+
+let input = document.getElementById("verifyToken").value;
+
+if(!stored){
+document.getElementById("result").innerHTML="No token found";
+return;
+}
+
+let now = new Date();
+let expiry = new Date(stored.expiry);
+
+if(input === stored.token){
+
+if(now < expiry){
+document.getElementById("result").innerHTML="Access Granted";
+}
+else{
+document.getElementById("result").innerHTML="Token Expired";
+}
+
+}
+else{
+document.getElementById("result").innerHTML="Invalid Token";
+}
+
+}
+
+</script>
+
+</body>
+</html>
